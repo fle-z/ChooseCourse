@@ -1,0 +1,33 @@
+[ 2016-05-20T12:45:20+08:00 ] 127.0.0.1 /ChooseCourse/index.php/Index/login.html
+ERR: 非法操作:login
+
+[ 2016-05-20T12:46:07+08:00 ] 127.0.0.1 /ChooseCourse/index.php/Index/login.html
+ERR: 模板不存在:./Application/Home/View/Index/login.html
+
+[ 2016-05-20T12:46:08+08:00 ] 127.0.0.1 /ChooseCourse/index.php/Index/login.html
+ERR: 模板不存在:./Application/Home/View/Index/login.html
+
+[ 2016-05-20T22:39:24+08:00 ] 127.0.0.1 /ChooseCourse/index.php/Index/login.html
+ERR: 模板不存在:./Application/Home/View/Index/login.html
+
+[ 2016-05-20T22:45:14+08:00 ] 127.0.0.1 /ChooseCourse/index.php/Index/login.html
+ERR: 模板不存在:./Application/Home/View/Index/login.html
+
+[ 2016-05-20T22:45:15+08:00 ] 127.0.0.1 /ChooseCourse/index.php/Index/login.html
+ERR: 模板不存在:./Application/Home/View/Index/login.html
+
+[ 2016-05-20T22:45:21+08:00 ] 127.0.0.1 /ChooseCourse/index.php/Index/login.html
+ERR: 模板不存在:./Application/Home/View/Index/login.html
+
+[ 2016-05-20T22:45:22+08:00 ] 127.0.0.1 /ChooseCourse/index.php/Index/login.html
+ERR: 模板不存在:./Application/Home/View/Index/login.html
+
+[ 2016-05-20T22:45:23+08:00 ] 127.0.0.1 /ChooseCourse/index.php/Index/login.html
+ERR: 模板不存在:./Application/Home/View/Index/login.html
+
+[ 2016-05-20T23:16:41+08:00 ] 127.0.0.1 /ChooseCourse/index.php/Index/signin.css
+ERR: 非法操作:signin.css
+
+[ 2016-05-20T23:16:41+08:00 ] 127.0.0.1 /ChooseCourse/index.php/Index/signin.css
+ERR: 非法操作:signin.css
+

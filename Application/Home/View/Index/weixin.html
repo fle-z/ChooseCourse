@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- head头部分开始 -->
+<head>
+    <include file="Public/public_head" title="布搭布搭学生选课系统" keywords="微信分享" description="" />
+    <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script type="text/javascript" src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+    <script type="text/javascript" src="http://wechat.emokit.com/front/wxpz/wx.js"></script>
+</head>
+<!-- head头部分结束 -->
+<body>
+<!-- 顶部导航开始 -->
+
+<!-- 顶部导航结束 -->
+
+<div class="b-h-70"></div>
+<!-- 主体部分开始 -->
+<div id="b-content" class="container">
+    <div class="row">
+
+    </div>
+    <div class="row">
+        <!-- 底部文件开始 -->
+        <include file="Public/public_foot" />
+        <!-- 通用底部文件结束 -->
+    </div>
+</div>
+<!-- 主体部分结束 -->
+
+    <script>
+        var appid        = "{$mapjson.appid}";
+        var nonceStr     = "{$mapjson.nonceStr}";
+        var timestamp    = "{$mapjson.timestamp}";
+        var signature    = "{$mapjson.signature}";
+        var open_id      = "{$mapjson.open_id}";
+        var jsapi_ticket = "{$mapjson.jsapi_ticket}";
+        var access_token = "{$mapjson.access_token}";
+        var ghid         = appid;
+    	var emokit_appid = "100641";
+    	var emokit_key   = "161e86cfe7f1daef2ce0992896ec3bcb";
+
+        //通过config接口注入权限验证配置
+        wx.config({
+            debug: true,
+            appId : appid,
+    		timestamp : timestamp,
+    		nonceStr : nonceStr,
+    		signature : signature,
+
+            jsApiList: [
+                'onMenuShareTimeline',
+                'onMenuShareAppMessage',
+                'chooseImage',
+                'scanQRCode',
+                'chooseImage',
+                'uploadImage',
+                'startRecord',
+                'stopRecord',
+                'uploadVoice'
+            ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        });
+
+        //通过ready接口处理成功验证
+        wx.ready(function(){
+            //获取“分享到朋友圈”按钮点击状态及自定义分享内容接口
+            wx.onMenuShareTimeline({
+                title: 'aaaa', // 分享标题
+                link: 'http://www.imooc.cn', // 分享链接
+                imgUrl: 'https://www.baidu.com/img/bdlogo.png', // 分享图标
+                success: function () {
+                    // 用户确认分享后执行的回调函数
+                },
+                cancel: function () {
+                    // 用户取消分享后执行的回调函数
+                }
+            });
+
+            //获取“分享给朋友”按钮点击状态及自定义分享内容接口
+            wx.onMenuShareAppMessage({
+                title: 'bbbb', // 分享标题
+                desc: 'hello world', // 分享描述
+                link: 'http://www.imooc.com', // 分享链接
+                imgUrl: 'https://www.baidu.com/img/bdlogo.png', // 分享图标
+                type: '', // 分享类型,music、video或link，不填默认为link
+                dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                success: function () {
+                    // 用户确认分享后执行的回调函数
+                    alert('分享成功！');
+                },
+                cancel: function () {
+                    // 用户取消分享后执行的回调函数
+                }
+            });
+		});
+
+        function show(){
+            //拍照或从手机相册中选图接口
+            wx.chooseImage({
+                count: 1, // 默认9
+                sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                success: function (res) {
+                    var localIds = res.localIds; // 返回选定照片的本地ID列表
+                    syncUploadImage(localIds);
+                }
+            });
+
+            var syncUploadImage = function(localIds) {
+        		alert("the localId is" + localIds);
+        		var localId = localIds;
+        		function submitcallback() {
+        		}
+        		wx.uploadImage({
+        			localId : localId, // 需要上传的图片的本地ID由chooseImage接口获得
+        			isShowProgressTips : 1, // 默认为1，显示进度提示
+        			success : function(res) {
+        				var serverId = res.serverId; //  返回图片的服务器端ID
+                        alert(serverId);
+        				var datas = {
+        					"uid" : open_id,
+        					"access_token" : access_token,
+        					"media_id" : serverId,
+        					"ghid" : appid,
+        					"emokit_appid" : emokit_appid,
+        					"emokit_key" : emokit_key
+        				};
+        				console.log("data us" + JSON.stringify(datas));
+        				sendface(datas, function(resinfo) { //调用SDK图像接口
+        					alert("json call back" + JSON.stringify(resinfo));
+        					var resultcode = resinfo.resultcode;
+        					if ("10000" == resultcode) {
+        						$("#message").text("请再试一下,系统没忙过来...");
+        					} else if ("200" == resultcode) {
+        						if (undefined != resinfo.rc_main) {
+        							if (resinfo.rc_main.indexOf("+") != -1) {
+        								$("#message").text("您现在是正面情绪，请继续保持好心情!");
+        							} else {
+        								$("#message").text("您现在是负面情绪，需要改善一下心情哟!");
+        							}
+        						}
+        						console.log("rc_main:" + resinfo.rc_main + " rc_minor:" + resinfo.rc_minor);
+        					}
+        				});
+        			}
+        		});
+            }
+        }
+
+        function scan(){
+            //调起微信扫一扫接口
+            wx.scanQRCode({
+                needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+                scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+                success: function (res) {
+                    var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+                }
+            });
+        }
+
+        function up(){
+            wx.chooseImage({
+                count: 1, // 默认9
+                sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                success: function (res) {
+                    var localIds = res.localIds; // 返回选定照片的本地ID列表
+                    setTimeout(
+                    wx.uploadImage({
+                        localId: localIds, // 需要上传的图片的本地ID，由chooseImage接口获得
+                        isShowProgressTips: 1, // 默认为1，显示进度提示
+                        success: function (res) {
+                            var serverId = res.serverId; // 返回图片的服务器端ID
+                        }
+                    }),100);
+                }
+            });
+        }
+
+
+        var isRecord = true; // 是否开始录音
+        function voice(){
+            console.log("is record=>" + isRecord);
+			if (isRecord) {
+				wx.startRecord();
+				isRecord = false;
+				$("#message").text("");
+				$("#heartMsg").text("正在录音...");
+			} else {
+				wx.stopRecord({
+					success : function(res) {
+						var localId = res.localId;
+						syncUploadVoice(localId);
+					}
+				});
+				isRecord = true;
+				$("#heartMsg").text("用心运算中,请稍等...");
+			}
+
+            var syncUploadVoice = function(localIds) {
+        		console.log("the localId is" + localIds);
+        		var localId = localIds;
+        		function submitcallback() {
+        		}
+        		wx.uploadVoice({
+        			localId : localId, // 需要上传的音频的本地ID，由stopRecord接口获得
+        			isShowProgressTips : 1, // 默认为1，显示进度提示
+        			success : function(res) {
+        				var serverId = res.serverId; // 返回音频的服务器端ID
+        				var datas = {
+        					"uid" : open_id,
+        					"access_token" : access_token,
+        					"media_id" : serverId,
+        					"ghid" : appid,
+        					"emokit_appid" : emokit_appid,
+        					"emokit_key" : emokit_key
+        				};
+        				alert("data us" + JSON.stringify(datas));
+        				sendvoice(datas, function(resinfo) {
+        					alert("json call back" + JSON.stringify(resinfo));
+        					var resultcode = resinfo.resultcode;
+                            alert(resultcode);
+        					if ("10000" == resultcode) {
+        						$("#message").text("请再试一下,系统没忙过来...");
+        					} else if ("200" == resultcode) {
+        						if (undefined != resinfo.rc_main) {
+        							if (resinfo.rc_main.indexOf("+") != -1) {
+        								alert("您现在是正面情绪，请继续保持好心情!");
+        							} else {
+        								alert("您现在是负面情绪，需要改善一下心情哟!");
+        							}
+        						}
+        						console.log("rc_main:" + resinfo.rc_main + " rc_minor:" + resinfo.rc_minor);
+        					}
+        				});
+        			}
+        		});
+        	}
+        }
+        //通过error接口处理失败验证
+        wx.error(function(res){
+
+        });
+
+
+
+    </script>
+    <button class="btn btn-default" onclick='show()'>笑笑</button>
+    <button class="btn btn-default" onclick='scan()'>扫一扫</button>
+    <button class="btn btn-default" onclick='up()'>传图</button>
+    <button class="btn btn-default" onclick='voice()'>录音</button>
+</body>
+</html>

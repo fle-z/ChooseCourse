@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- head头部分开始 -->
+
+<head>
+    <include file="Public/public_head" title="查看学生选课" keywords="{$Think.config.WEB_KEYWORDS}" description="{$Think.config.WEB_DESCRIPTION}" />
+</head>
+<!-- head头部分结束 -->
+
+<body>
+    <!-- 顶部导航开始 -->
+    <include file="Public/public_nav" />
+    <!-- 顶部导航结束 -->
+    <div class="b-h-70"></div>
+    <div class="row">
+        <div class="col-xs-10 col-md-offset-1">
+            <h2>选课学生</h2>
+            <form action="__URL__/setScore" method="post">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th  width="20%">姓名</th>
+                            <th  width="20%">学号</th>
+                            <th>得分</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <volist id="data" name="result">
+                            <tr>
+                                <td>
+                                    <label>{$data.username}</label>
+                                </td>
+                                <td>{$data.number}</td>
+                                <td>
+                                    <div class="col-sm-4 col-sm-offset-0">
+                                        <input type="text" class="form-control" id="score" name = "{$data.number}" placeholder="请输入成绩">
+                                    </div>
+                                </td>
+                            </tr>
+                        </volist>
+                    </tbody>
+                </table>
+                <button type="submit" class="btn btn-sm" style="font-size:12px;float:right;">&nbsp;&nbsp;提交&nbsp;&nbsp;</button>
+            </form>
+            <br>
+            <gt name="displaypage" value="0">
+                <!-- 列表分页开始 -->
+                <div class="row">
+                    <div class="col-xs-12 col-md-12 col-lg-12 b-page">
+                        {$page}
+                    </div>
+                </div>
+                <!-- 列表分页结束 -->
+                <else/> 没有选课信息
+            </gt>
+        </div>
+    </div>
+    <bootstrapjs />
+</body>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- head头部分开始 -->
+
+<head>
+    <include file="Public/public_head" title="选择课程" keywords="{$Think.config.WEB_KEYWORDS}" description="{$Think.config.WEB_DESCRIPTION}" />
+</head>
+<!-- head头部分结束 -->
+
+<body>
+    <!-- 顶部导航开始 -->
+    <include file="Public/public_nav" />
+    <!-- 顶部导航结束 -->
+    <div class="b-h-70"></div>
+    <div class="row">
+        <div class="col-xs-10 col-md-offset-1">
+            <h2>选择课程</h2>
+            <form class="form-search" style="float:right; width:20em; margin: 0.5em 2em;" method="POST" action="__URL__/listCourse">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="course" placeholder="查询" required>
+                    <div class="input-group-btn">
+                        <button type="submit" class="btn btn-default">
+                            <span class="glyphicon glyphicon-search"> </span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <form action="__URL__/chooseCourse" method="post">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th width>课程编号</th>
+                            <th>课程名</th>
+                            <th>指导教师</th>
+                            <th>已选/容量</th>
+                            <th>上课教室</th>
+                            <th>上课时间</th>
+                            <th>学分</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <volist id="data" name="course_info">
+                            <tr>
+                                <td>
+                                    <input type="checkbox" id="c1" class="check" name="checkbox[]" value="{$data.number}">&nbsp;&nbsp;
+                                    <label>{$data.number}</label>
+                                </td>
+                                <td>{$data.coursename}</td>
+                                <td>{$data.teacher_name}</td>
+                                <td>{$data.selectedman}/{$data.capacity}</td>
+                                <td>{$data.classroom}</td>
+                                <td>{$data.classtime}节</td>
+                                <td>{$data.point}</td>
+                            </tr>
+                        </volist>
+                    </tbody>
+                </table>
+                <button type="submit" class="btn btn-sm" style="font-size:12px;float:right;">&nbsp;&nbsp;提交&nbsp;&nbsp;</button>
+            </form>
+            <br>
+            <gt name="displaypage" value="0">
+                <!-- 列表分页开始 -->
+                <div class="row">
+                    <div class="col-xs-12 col-md-12 col-lg-12 b-page">
+                        {$page}
+                    </div>
+                </div>
+                <!-- 列表分页结束 -->
+                <else/> 没有课程信息
+            </gt>
+        </div>
+    </div>
+    <bootstrapjs />
+</body>

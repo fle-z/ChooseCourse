@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- head头部分开始 -->
+
+<head>
+    <include file="Public/public_head" title="查看学生信息" keywords="{$Think.config.WEB_KEYWORDS}" description="{$Think.config.WEB_DESCRIPTION}" />
+</head>
+<!-- head头部分结束 -->
+
+<body>
+    <!-- 顶部导航开始 -->
+    <include file="Public/public_nav_admin" />
+    <!-- 顶部导航结束 -->
+    <div class="b-h-70"></div>
+    <div class="row">
+        <div class="col-xs-10 col-md-offset-1">
+            <h2>学生信息</h2>
+            <form class="form-search" style="float:right; width:20em; margin: 0.5em 2em;" method="POST" action="__URL__/viewStudents">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="student" placeholder="查询" required>
+                    <div class="input-group-btn">
+                        <button type="submit" class="btn btn-default">
+                            <span class="glyphicon glyphicon-search"> </span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>姓名</th>
+                        <th>学号</th>
+                        <th>性别</th>
+                        <th>入学年龄</th>
+                        <th>入学年份</th>
+                        <th>班级</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <volist id="data" name="result">
+                        <tr>
+                            <td>{$data.username}</td>
+                            <td>{$data.number}</td>
+                            <td>{$data.sex}</td>
+                            <td>{$data.age_school}</td>
+                            <td>{$data.year_school}</td>
+                            <td>{$data.class_name}</td>
+                            <td>
+                                <a href="javascript:void(0)" onclick="update(this);">修改</a>
+                            </td>
+                        </tr>
+                    </volist>
+                </tbody>
+            </table>
+            <br>
+            <gt name="displaypage" value="0">
+                <!-- 列表分页开始 -->
+                <div class="row">
+                    <div class="col-xs-12 col-md-12 col-lg-12 b-page">
+                        {$page}
+                    </div>
+                </div>
+                <!-- 列表分页结束 -->
+                <else/> 没有学生信息
+            </gt>
+        </div>
+    </div>
+
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="update" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+              修改学生信息
+            </h4>
+                </div>
+                <form name="form" accept-charset="utf-8" id="form" class="form" action="{:U('Boss/updateStudents')}" method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="username" class="col-sm-2 control-label">姓名</label>
+                            <div class="col-sm-10" style="margin-bottom:10px;">
+                                <input type="text" class="form-control" id="username" name="username" placeholder="请输入姓名">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="username" class="col-sm-2 control-label">学号</label>
+                            <div class="col-sm-10" style="margin-bottom:10px;">
+                                <input type="text" class="form-control" id="number" name="number" readOnly="true">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="score" class="col-sm-2 control-label">性别</label>
+                            <center>
+                                <input type="radio" name="sex" class="type" value="男" checked/>男
+                                <input type="radio" name="sex" class="type" value="女" />女
+                            </center>
+                        </div>
+                        <div class="form-group">
+                            <label for="score" class="col-sm-2 control-label">入学年龄</label>
+                            <div class="col-sm-10" style="margin-bottom:10px;">
+                                <input type="text" class="form-control" id="age_school" name="age_school" placeholder="请输入入学年龄">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="score" class="col-sm-2 control-label">入学年份</label>
+                            <div class="col-sm-10" style="margin-bottom:10px;">
+                                <input type="text" class="form-control" id="year_school" name="year_school" placeholder="请输入入学年份">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="score" class="col-sm-2 control-label">班级</label>
+                            <div class="col-sm-10" style="margin-bottom:10px;">
+                                <input type="text" class="form-control" id="class_name" name="class_name" placeholder="请输入班级">
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            提交
+                        </button>
+                    </div>
+                </form>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+        <script>
+            function update(obj) {
+                var tds = $(obj).parent().parent().find('td');
+                $('#username').val(tds.eq(0).text());
+                $('#number').val(tds.eq(1).text());
+                $('#age_school').val(tds.eq(3).text());
+                $('#year_school').val(tds.eq(4).text());
+                $('#class_name').val(tds.eq(5).text());
+                $('#update').modal('show');
+            }
+        </script>
+        <bootstrapjs />
+</body>

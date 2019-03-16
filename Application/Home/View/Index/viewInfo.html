@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- head头部分开始 -->
+
+<head>
+    <include file="Public/public_head" title="个人中心" keywords="查看个人信息" description="" />
+</head>
+<!-- head头部分结束 -->
+
+<body>
+    <!-- 顶部导航开始 -->
+    <include file="Public/public_nav" />
+    <!-- 顶部导航结束 -->
+    <div class="b-h-70"></div>
+    <div class="row">
+        <div class="col-xs-10 col-md-offset-1">
+            <h2>个人信息</h2>
+            <br> <br>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>姓名</th>
+                        <th>学号</th>
+                        <th>性别</th>
+                        <th>入学年龄</th>
+                        <th>入学年份</th>
+                        <th>班级</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <volist id="data" name="result">
+                        <tr>
+                            <td>
+                                <label>{$data.username}</label>
+                            </td>
+                            <td>{$data.number}</td>
+                            <td>{$data.sex}</td>
+                            <td>{$data.age_school}</td>
+                            <td>{$data.year_school}</td>
+                            <td>{$data.class_name}</td> </tr>
+                    </volist>
+                </tbody>
+            </table>
+            <a type="button" class="btn btn-danger" style="float:right;"
+            href="{:U('Index/drop', array('number'=>$data['number']))}" role="button">一键退学</a>
+            <br>
+        </div>
+    </div>
+    <bootstrapjs />
+</body>

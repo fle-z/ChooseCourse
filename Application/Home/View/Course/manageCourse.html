@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- head头部分开始 -->
+
+<head>
+    <include file="Public/public_head" title="选择课程" keywords="{$Think.config.WEB_KEYWORDS}" description="{$Think.config.WEB_DESCRIPTION}" />
+</head>
+<!-- head头部分结束 -->
+
+<body>
+    <!-- 顶部导航开始 -->
+    <include file="Public/public_nav" />
+    <!-- 顶部导航结束 -->
+    <div class="b-h-70"></div>
+    <div class="row">
+        <div class="col-xs-10 col-md-offset-1">
+            <h2>已选课程</h2>
+            <br> <br>
+            <form action="__URL__/quitCourse" method="post">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>课程编号</th>
+                            <th>课程名</th>
+                            <th>指导教师</th>
+                            <th>已选/容量</th>
+                            <th>上课教室</th>
+                            <th>上课时间</th>
+                            <th>学分</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <volist id="data" name="course_info">
+                            <tr>
+                                <td>
+                                    <input type="checkbox" id="c1" class="check" name="checkbox[]" value="{$data.number}">&nbsp;&nbsp;
+                                    <label>{$data.number}</label>
+                                </td>
+                                <td>{$data.coursename}</td>
+                                <td>{$data.teacher_name}</td>
+                                <td>{$data.selectedman}/{$data.capacity}</td>
+                                <td>{$data.classroom}</td>
+                                <td>{$data.classtime}节</td>
+                                <td>{$data.point}</td>
+                            </tr>
+                        </volist>
+                    </tbody>
+                </table>
+                <button type="submit" class="btn btn-sm" style="font-size:12px;float:right;">&nbsp;&nbsp;退课&nbsp;&nbsp;</button>
+            </form>
+            <br>
+            <gt name="export" value="0">
+                <else/> 还没有选课
+            </gt>
+        </div>
+    </div>
+    <bootstrapjs />
+</body>

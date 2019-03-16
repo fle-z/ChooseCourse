@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- head头部分开始 -->
+
+<head>
+    <include file="Public/public_head" title="查看成绩" keywords="{$Think.config.WEB_KEYWORDS}" description="{$Think.config.WEB_DESCRIPTION}" />
+    <script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/js/highcharts.js"></script>
+</head>
+<!-- head头部分结束 -->
+
+<body>
+    <!-- 顶部导航开始 -->
+    <include file="Public/public_nav" />
+    <!-- 顶部导航结束 -->
+    <div class="b-h-70"></div>
+    <div class="row">
+        <div class="col-xs-10 col-md-offset-1">
+            <h2>查看学生成绩分布</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>60分以下</th>
+                        <th>60-70</th>
+                        <th>70-80</th>
+                        <th>80-90</th>
+                        <th>90-100</th>
+                        <th>100</th>
+                        <th>平均分</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <foreach item="data" name="score">
+                            <td>{$data.name}</td>
+                        </foreach>
+                        <td>{$avgScore}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div id="chart" style="width: 550px; height: 400px; margin: 0 auto"></div>
+
+        </div>
+    </div>
+    <script language="JavaScript">
+        $(document).ready(function() {
+            var title = {
+                text: '学生成绩分布'
+            };
+            var subtitle = {
+                text: ''
+            };
+            var xAxis = {
+                categories: ['60以下', '60-70', '70-80', '80-90', '90-100', '100']
+            };
+            var yAxis = {
+                title: {
+                    text: '人数(人)'
+                }
+            };
+            var plotOptions = {
+                line: {
+                    dataLabels: {
+                        enabled: true
+                    },
+                    enableMouseTracking: false
+                }
+            };
+            var series = [{
+                name: '成绩分布',
+                data: [0, 0, 0, 1, 1, 0]
+            }];
+
+            var json = {};
+
+            json.title = title;
+            json.subtitle = subtitle;
+            json.xAxis = xAxis;
+            json.yAxis = yAxis;
+            json.series = series;
+            json.plotOptions = plotOptions;
+            $('#chart').highcharts(json);
+
+        });
+    </script>
+</body>
+
+</html>

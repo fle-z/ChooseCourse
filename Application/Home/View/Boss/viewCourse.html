@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- head头部分开始 -->
+
+<head>
+    <include file="Public/public_head" title="选择课程" keywords="{$Think.config.WEB_KEYWORDS}" description="{$Think.config.WEB_DESCRIPTION}" />
+</head>
+<!-- head头部分结束 -->
+
+<body>
+    <!-- 顶部导航开始 -->
+    <include file="Public/public_nav_admin" />
+    <!-- 顶部导航结束 -->
+    <div class="b-h-70"></div>
+    <div class="row">
+        <div class="col-xs-10 col-md-offset-1">
+            <h2>查看课程</h2>
+            <form class="form-search" style="float:right; width:20em; margin: 0.5em 2em;" method="POST" action="__URL__/listCourse">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="course" placeholder="查询" required>
+                    <div class="input-group-btn">
+                        <button type="submit" class="btn btn-default">
+                            <span class="glyphicon glyphicon-search"> </span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <form action="__URL__/delCourse" method="post">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>课程编号</th>
+                            <th>课程名</th>
+                            <th>指导教师</th>
+                            <th>已选/容量</th>
+                            <th>上课教室</th>
+                            <th>上课时间</th>
+                            <th>学分</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <volist id="data" name="course_info">
+                            <tr>
+                                <td><input type="checkbox" id="c1" class="check" name="checkbox[]" value="{$data.number}">{$data.number}</td>
+                                <td>{$data.coursename}</td>
+                                <td>{$data.teacher_name}</td>
+                                <td>{$data.selectedman}/{$data.capacity}</td>
+                                <td>{$data.classroom}</td>
+                                <td>{$data.classtime}节</td>
+                                <td>{$data.point}</td>
+                                <td>
+                                    <a href="javascript:void(0)" onclick="update(this);">修改</a>
+                                </td>
+                            </tr>
+                        </volist>
+                    </tbody>
+                </table>
+                <button type="submit" class="btn btn-sm" style="font-size:12px;float:right;">&nbsp;&nbsp;提交&nbsp;&nbsp;</button>
+            </form>
+            <br>
+            <gt name="displaypage" value="0">
+                <!-- 列表分页开始 -->
+                <div class="row">
+                    <div class="col-xs-12 col-md-12 col-lg-12 b-page">
+                        {$page}
+                    </div>
+                </div>
+                <!-- 列表分页结束 -->
+                <else/> 没有课程信息
+            </gt>
+        </div>
+    </div>
+
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="update" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+              修改课程信息
+            </h4>
+                </div>
+                <form name="form" accept-charset="utf-8" id="form" class="form" action="{:U('Boss/updateCourse')}" method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="number" class="col-sm-2 control-label">课程编号</label>
+                            <div class="col-sm-10" style="margin-bottom:10px;">
+                                <input type="text" class="form-control" id="number" name="number" readOnly="true">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="username" class="col-sm-2 control-label">课程名</label>
+                            <div class="col-sm-10" style="margin-bottom:10px;">
+                                <input type="text" class="form-control" id="coursename" name="coursename" placeholder="请输入姓名">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="score" class="col-sm-2 control-label">指导老师</label>
+                            <div class="col-sm-10" style="margin-bottom:10px;">
+                                <input type="text" class="form-control" id="teacher_name" name="teacher_name" placeholder="请输入指导老师">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="score" class="col-sm-2 control-label">上课教室</label>
+                            <div class="col-sm-10" style="margin-bottom:10px;">
+                                <input type="text" class="form-control" id="classroom" name="classroom" placeholder="请输入入学上课教室">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="score" class="col-sm-2 control-label">上课时间</label>
+                            <div class="col-sm-10" style="margin-bottom:10px;">
+                                <input type="text" class="form-control" id="classtime" name="classtime" placeholder="请输入上课时间">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="score" class="col-sm-2 control-label">学分</label>
+                            <div class="col-sm-10" style="margin-bottom:10px;">
+                                <input type="text" class="form-control" id="point" name="point" placeholder="请输入学分">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                提交
+                            </button>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                </form>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
+            <script>
+                function update(obj) {
+                    var tds = $(obj).parent().parent().find('td');
+                    $('#number').val(tds.eq(0).text());
+                    $('#coursename').val(tds.eq(1).text());
+                    $('#teacher_name').val(tds.eq(2).text());
+                    $('#classroom').val(tds.eq(4).text());
+                    $('#classtime').val(tds.eq(5).text());
+                    $('#point').val(tds.eq(6).text());
+                    $('#update').modal('show');
+                }
+            </script>
+            <bootstrapjs />
+</body>
